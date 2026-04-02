@@ -252,8 +252,8 @@ src/
 
 ```bash
 # Clone the repository
-git clone https://github.com/Ayush-CS-89112521/TAFL_Project_CNF_and_GNF_Converter.git
-cd TAFL_Project_CNF_and_GNF_Converter
+git clone https://github.com/Ayush-CS-89112521/CNF_GNF_Converter.git
+cd CNF_GNF_Converter
 
 # Install dependencies
 npm install
