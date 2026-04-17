@@ -1,12 +1,12 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap, Sparkles, Code2 } from 'lucide-react';
+import { ArrowRight, Zap, Code2 } from 'lucide-react';
 import grammerInputImg from '../../../Images/grammer_input.png';
 import graphVizImg from '../../../Images/graph visualization.png';
 import stepViewImg from '../../../Images/step_view.png';
 import outputFormatImg from '../../../Images/output_format.png';
-import codeEditorImg from '../../../Images/code_editor_interface.png';
+import codeEditorImg from '../../../Images/code_editor_interface.jpg';
 import serverComputingImg from '../../../Images/server_computing_infrasture.png';
 const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -74,10 +74,6 @@ export function Home() {
           <div className="hero-gradient"></div>
           <ScrollReveal>
             <div className="hero-content">
-              <div className="version-badge">
-                <Sparkles size={16} />
-                <span>Grammar Conversion Engine v1.0</span>
-              </div>
               <h1 className="hero-title">
                 Convert Context-Free Grammars to <span className="hero-gradient-text">CNF & GNF</span>
               </h1>

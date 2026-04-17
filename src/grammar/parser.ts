@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { makeRule } from './types';
 import type { Grammar, GrammarSymbol, Rule } from './types';
 const EPS_SYMBOLS = new Set(['ε', 'eps', 'epsilon']);
+const EPS_ALIASES = new Set(['ε', 'eps', 'epsilon', 'e', 'null', 'empty', 'λ', 'lambda']);
 export interface ParseResult {
   grammar: Grammar | null;
   errors: string[];
@@ -52,6 +53,12 @@ export function parseGrammar(input: string): ParseResult {
       }
       if (EPS_SYMBOLS.has(alt)) {
         productions.push(makeRule(parsed.head, [], true));
+        continue;
+      }
+      if (EPS_ALIASES.has(alt) && !EPS_SYMBOLS.has(alt)) {
+        errors.push(
+          `Line ${parsed.lineNo}: "${alt}" is not a recognized epsilon format. Use: ε, eps, or epsilon`
+        );
         continue;
       }
       const symbols = tokenizeRhs(alt, knownNonTerminals);

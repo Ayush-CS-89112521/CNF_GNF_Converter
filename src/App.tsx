@@ -13,6 +13,7 @@ import {
   Play,
   Table2,
   Trash2,
+  Upload,
   X,
 } from 'lucide-react';
 import { GrammarGraphPanel } from './components/GrammarGraphPanel';
@@ -135,6 +136,44 @@ function App() {
     const { grammar: parsedGrammar, errors } = parseGrammar(value);
     setGrammar(parsedGrammar, errors);
   };
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    if (!file.name.endsWith('.txt')) {
+      alert('Only .txt files');
+      event.target.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      const lines = content.split('\n').map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('//') && !l.startsWith('#'));
+      const startSymbols = new Set<string>();
+      for (const line of lines) {
+        const arrowIdx = line.indexOf('->') !== -1 ? line.indexOf('->') : line.indexOf('→');
+        if (arrowIdx !== -1) {
+          const head = line.slice(0, arrowIdx).trim();
+          if (/^[A-Z][A-Z0-9'_]*$/.test(head)) {
+            startSymbols.add(head);
+          }
+        }
+      }
+      
+      if (startSymbols.size > 1) {
+        alert('Single grammar only');
+        event.target.value = '';
+        return;
+      }
+      
+      handleInputChange(content);
+    };
+    reader.onerror = () => {
+      alert('Error reading file');
+    };
+    reader.readAsText(file);
+  };
   const freshVariableCount = (g: Grammar | null): number => {
     if (!g) return 0;
     return Array.from(g.nonTerminals).filter(nt => /^([TXZ]_?\w*|[TXZ]\d+)/.test(nt)).length;
@@ -206,12 +245,30 @@ function App() {
             <div className="panel">
               <p className="eyebrow">Input Stream</p>
               <h2 className="section-title">Grammar Input</h2>
-              <textarea
-                value={inputText}
-                onChange={e => handleInputChange(e.target.value)}
-                className={`editor-area ${inputErrors.length > 0 ? 'error' : ''}`}
-                spellCheck={false}
-              />
+              <div className="input-guide">
+                <p><strong>UPLOAD RULE:</strong> One grammar per .txt file only</p>
+                <p><strong>✓ Epsilon:</strong> ε, eps, or epsilon</p>
+                <p><strong>✗ NOT allowed:</strong> Multiple grammars in one file</p>
+              </div>
+              <div className="textarea-wrapper">
+                <textarea
+                  value={inputText}
+                  onChange={e => handleInputChange(e.target.value)}
+                  className={`editor-area ${inputErrors.length > 0 ? 'error' : ''}`}
+                  spellCheck={false}
+                  placeholder="S → AB | a\nA → a | ε\nB → Ab | b"
+                />
+                <label className="file-upload-btn">
+                  <Upload size={16} />
+                  <span>Upload .txt</span>
+                  <input
+                    type="file"
+                    accept=".txt"
+                    onChange={handleFileUpload}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              </div>
               {inputErrors.length > 0 && (
                 <div className="error-stack">
                   {inputErrors.slice(0, 3).map(err => (

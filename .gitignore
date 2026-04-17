@@ -48,6 +48,11 @@ Desktop.ini
 *.ntvs*
 *.njsproj
 *.sln
+
+# Test grammar files
+*.txt
+*.grammar
+*.cfg
 *.sw?
 *.swp
 *.swo
