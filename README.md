@@ -10,6 +10,7 @@
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Quick Start](#quick-start)
 - [Features](#features)
 - [Technology Stack](#technology-stack)
 - [Architecture](#architecture)
@@ -17,7 +18,8 @@
 - [Installation & Setup](#installation--setup)
 - [Usage Guide](#usage-guide)
 - [Algorithms & Concepts](#algorithms--concepts)
-- [API Reference](#api-reference)
+- [Browser Support](#browser-support)
+- [Deployment](#deployment)
 - [Contributing](#contributing)
 
 ---
@@ -43,6 +45,36 @@ The **TAFL Project: CNF & GNF Converter** is an interactive educational tool des
 
 ---
 
+## 🚀 Quick Start
+
+**For users just cloning the repository:**
+
+```bash
+# 1. Clone repository
+git clone https://github.com/Ayush-CS-89112521/CNF_GNF_Converter.git
+cd CNF_GNF_Converter
+
+# 2. Install dependencies
+npm install
+
+# 3. Start development server
+npm run dev
+
+# 4. Open in browser
+# Navigate to http://localhost:5173
+```
+
+**First-time usage:**
+1. Enter a grammar (or upload a `.txt` file with one grammar)
+2. Click **"Convert to CNF"** to transform
+3. Explore the transformation steps
+4. (Optional) Click **"Convert to GNF"** for further conversion
+5. Export results as PDF from the Export Center
+
+See [Usage Guide](#usage-guide) for detailed walkthrough.
+
+---
+
 ## ✨ Features
 
 ### Core Functionality
@@ -50,7 +82,8 @@ The **TAFL Project: CNF & GNF Converter** is an interactive educational tool des
 #### 1. **Grammar Parsing & Validation**
 - Parse context-free grammars in standard notation (e.g., `S → aB | ε`)
 - Real-time syntax validation with detailed error messages
-- Support for epsilon (ε) productions, terminals, and non-terminals
+- Support for **three epsilon formats**: `ε`, `eps`, or `epsilon`
+- Upload grammars from `.txt` files (one grammar per file)
 - Automatic identification of start symbol
 
 #### 2. **CNF Pipeline** (5 Transformation Steps)
@@ -305,6 +338,8 @@ npx tsc --noEmit
 ### Basic Workflow
 
 #### 1. **Input a Grammar**
+
+**Option A: Type Directly**
 On the **Workspace** screen, enter a context-free grammar using standard notation:
 
 ```
@@ -312,10 +347,25 @@ S → aSb | ε
 A → bA | a
 ```
 
+**Option B: Upload from File**
+Click the **"Upload .txt"** button and select a text file. Rules:
+- File must be `.txt` format only
+- Contains **one grammar** only (not multiple)
+- System validates and loads the content automatically
+
+**Input Format Rules:**
 - Rules are separated by newlines
 - Each rule: `NonTerminal → Body | Body2 | ...`
-- Use `ε` or `epsilon` for epsilon productions
-- Terminals are lowercase/symbols; non-terminals are uppercase
+- Use **epsilon formats**: `ε`, `eps`, or `epsilon`
+- Terminals are lowercase/symbols; non-terminals are UPPERCASE
+- Arrow can be `→` or `->`
+
+**Input Guide** (shown in UI):
+```
+UPLOAD RULE: One grammar per .txt file only
+✓ Epsilon: ε, eps, or epsilon
+✗ NOT allowed: Multiple grammars in one file
+```
 
 #### 2. **Run CNF Conversion**
 Click **"Convert to CNF"** to:
@@ -1043,6 +1093,45 @@ function grammarToGraph(grammar: Grammar): GrammarGraph {
   edges: GraphEdge[];  // {from, to, label, id}
 }
 ```
+
+---
+
+## 🌐 Browser Support
+
+The tool is tested and works on:
+- **Chrome** 90+
+- **Firefox** 88+
+- **Safari** 14+
+- **Edge** 90+
+
+**Requirements:**
+- JavaScript enabled
+- Modern ES2020+ support
+- Canvas API (for graph visualization)
+- LocalStorage (for history persistence)
+
+---
+
+## 📦 Deployment
+
+For production deployment, see [DEPLOYMENT.md](./DEPLOYMENT.md) for:
+- Vercel deployment guide
+- Environment setup
+- Build optimization
+- Troubleshooting
+
+TL;DR: `npm run build` creates optimized production build in `dist/` folder.
+
+---
+
+## 📝 Test Grammar Files
+
+Sample `.txt` grammar files are included for testing (excluded from Git):
+- `sample_grammar.txt` - Simple grammar with epsilon
+- `arithmetic_grammar.txt` - Expression grammar with left recursion
+- `complex_grammar.txt` - Advanced grammar with unit productions
+
+**Note**: `.txt`, `.grammar`, and `.cfg` files are in `.gitignore` and won't be pushed to GitHub. Use them locally for testing the upload feature.
 
 ---
 
